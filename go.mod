@@ -1,4 +1,4 @@
-module github.com/piksonGit/pmongo/v1
+module github.com/piksonGit/pmongo
 
 go 1.14
 
