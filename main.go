@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/piksonGit/pmongo/v1/db"
+	"github.com/piksonGit/pmongo/db"
 	"go.mongodb.org/mongo-driver/bson"
 )
 
