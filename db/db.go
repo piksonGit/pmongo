@@ -17,7 +17,7 @@ type Col struct {
 }
 
 func init() {
-	plog.SetLog("./log.txt", "[pmongo]")
+	plog.SetLog("./mongo_log.txt", "[pmongo]")
 }
 func Conn(uri string, databaseName string, collectionName string) Col {
 	client, err := mongo.NewClient(options.Client().ApplyURI(uri))
