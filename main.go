@@ -12,5 +12,4 @@ type Qijing struct {
 }
 
 func main() {
-
 }

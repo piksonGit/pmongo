@@ -3,6 +3,7 @@ package db
 import (
 	"context"
 	"log"
+	"reflect"
 	"time"
 
 	"github.com/piksonGit/plog/plog"
@@ -12,13 +13,17 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+//Col自定义一个collection结构体
 type Col struct {
 	*mongo.Collection
 }
 
+//init初始化log系统
 func init() {
 	plog.SetLog("./mongo_log.txt", "[pmongo]")
 }
+
+//Conn连接数据库
 func Conn(uri string, databaseName string, collectionName string) Col {
 	client, err := mongo.NewClient(options.Client().ApplyURI(uri))
 	if err != nil {
@@ -35,6 +40,7 @@ func Conn(uri string, databaseName string, collectionName string) Col {
 	return col
 }
 
+//Find函数
 func (col *Col) Find(filter interface{}, opts ...*options.FindOptions) []bson.M {
 	cursor, err := col.Collection.Find(context.TODO(), filter, opts...)
 	if err != nil {
@@ -47,17 +53,33 @@ func (col *Col) Find(filter interface{}, opts ...*options.FindOptions) []bson.M 
 	return results
 }
 
+//FindOne函数
 func (col *Col) FindOne(filter bson.M, opts ...*options.FindOneOptions) bson.M {
 	var result bson.M
-	if filter["_id"] != nil {
-		filter["_id"], _ = primitive.ObjectIDFromHex(filter["_id"].(string))
-	}
+	filter = build_id(filter)
 	err := col.Collection.FindOne(context.TODO(), filter, opts...).Decode(&result)
 	if err != nil {
 		log.Println(err)
 	}
 	return result
 }
+
+//将字符串类型的_id字段转换成ObjectID类型。
+func build_id(filter bson.M) bson.M {
+	t := reflect.TypeOf(filter["_id"])
+	var ts string
+	if t == nil {
+		return filter
+	}
+	ts = t.String()
+	if ts == "string" {
+		filter["_id"], _ = primitive.ObjectIDFromHex(filter["_id"].(string))
+	}
+
+	return filter
+}
+
+//InsertOne函数
 func (col *Col) InsertOne(data bson.M, opts ...*options.InsertOneOptions) interface{} {
 	res, err := col.Collection.InsertOne(context.TODO(), data, opts...)
 	if err != nil {
@@ -66,14 +88,19 @@ func (col *Col) InsertOne(data bson.M, opts ...*options.InsertOneOptions) interf
 	return res.InsertedID
 }
 
-func (col *Col) DeleteOne(filter interface{}, opts ...*options.DeleteOptions) interface{} {
+//DeleteOne函数
+func (col *Col) DeleteOne(filter bson.M, opts ...*options.DeleteOptions) interface{} {
+	filter = build_id(filter)
 	res, err := col.Collection.DeleteOne(context.TODO(), filter, opts...)
 	if err != nil {
 		log.Println(err)
 	}
 	return res.DeletedCount
 }
-func (col *Col) UpdateOne(filter interface{}, update interface{}, opts *options.UpdateOptions) interface{} {
+
+//UpdateOne函数
+func (col *Col) UpdateOne(filter bson.M, update interface{}, opts *options.UpdateOptions) interface{} {
+	filter = build_id(filter)
 	res, err := col.Collection.UpdateOne(context.TODO(), filter, update, opts)
 	if err != nil {
 		log.Println(err)
