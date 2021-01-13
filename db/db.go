@@ -99,9 +99,9 @@ func (col *Col) DeleteOne(filter bson.M, opts ...*options.DeleteOptions) interfa
 }
 
 //UpdateOne函数
-func (col *Col) UpdateOne(filter bson.M, update interface{}, opts *options.UpdateOptions) interface{} {
+func (col *Col) UpdateOne(filter bson.M, update interface{}, opts ...*options.UpdateOptions) interface{} {
 	filter = build_id(filter)
-	res, err := col.Collection.UpdateOne(context.TODO(), filter, update, opts)
+	res, err := col.Collection.UpdateOne(context.TODO(), filter, update, opts...)
 	if err != nil {
 		log.Println(err)
 	}
