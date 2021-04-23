@@ -61,6 +61,8 @@ github.com/montanaflynn/stats v0.0.0-20171201202039-1bf9dbcd8cbe/go.mod h1:wL8QJ
 github.com/pelletier/go-toml v1.7.0/go.mod h1:vwGMzjaWMwyfHwgIBhI2YUM4fB6nL6lVAvS1LBMMhTE=
 github.com/piksonGit/plog v0.0.0-20201223041109-2c9222469085 h1:YIbVuhYPlDJyAPriNt3a6sXJQH85ET4DeHU9VJMAZ+A=
 github.com/piksonGit/plog v0.0.0-20201223041109-2c9222469085/go.mod h1:0th6og0imGiSu1Wv+AlD5m8WfU9to8h+oE7hfc/haM8=
+github.com/piksonGit/plog v0.0.0-20210423050016-e72373dd7111 h1:SSAD06UshdB5HZLvHQKSKMMvAtljIPQ/Sx1U4uxGDvY=
+github.com/piksonGit/plog v0.0.0-20210423050016-e72373dd7111/go.mod h1:0th6og0imGiSu1Wv+AlD5m8WfU9to8h+oE7hfc/haM8=
 github.com/pkg/errors v0.8.0/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pkg/errors v0.8.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
