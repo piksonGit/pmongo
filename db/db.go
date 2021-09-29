@@ -42,12 +42,13 @@ func Conn(uri string, databaseName string, collectionName string) Col {
 
 //Find函数
 func (col *Col) Find(filter interface{}, opts ...*options.FindOptions) []bson.M {
-	cursor, err := col.Collection.Find(context.TODO(), filter, opts...)
+	cursor, err := col.Collection.Find(context.Background(), filter, opts...)
+	defer cursor.Close(context.Background())
 	if err != nil {
 		log.Println(err)
 	}
 	var results []bson.M
-	if err = cursor.All(context.TODO(), &results); err != nil {
+	if err = cursor.All(context.Background(), &results); err != nil {
 		log.Println(err)
 	}
 	return results
@@ -57,7 +58,7 @@ func (col *Col) Find(filter interface{}, opts ...*options.FindOptions) []bson.M 
 func (col *Col) FindOne(filter bson.M, opts ...*options.FindOneOptions) bson.M {
 	var result bson.M
 	filter = build_id(filter)
-	err := col.Collection.FindOne(context.TODO(), filter, opts...).Decode(&result)
+	err := col.Collection.FindOne(context.Background(), filter, opts...).Decode(&result)
 	if err != nil {
 		log.Println(err)
 	}
@@ -81,7 +82,7 @@ func build_id(filter bson.M) bson.M {
 
 //InsertOne函数
 func (col *Col) InsertOne(data bson.M, opts ...*options.InsertOneOptions) interface{} {
-	res, err := col.Collection.InsertOne(context.TODO(), data, opts...)
+	res, err := col.Collection.InsertOne(context.Background(), data, opts...)
 	if err != nil {
 		log.Println(err)
 	}
@@ -91,7 +92,7 @@ func (col *Col) InsertOne(data bson.M, opts ...*options.InsertOneOptions) interf
 //DeleteOne函数
 func (col *Col) DeleteOne(filter bson.M, opts ...*options.DeleteOptions) interface{} {
 	filter = build_id(filter)
-	res, err := col.Collection.DeleteOne(context.TODO(), filter, opts...)
+	res, err := col.Collection.DeleteOne(context.Background(), filter, opts...)
 	if err != nil {
 		log.Println(err)
 	}
@@ -101,7 +102,7 @@ func (col *Col) DeleteOne(filter bson.M, opts ...*options.DeleteOptions) interfa
 //UpdateOne函数
 func (col *Col) UpdateOne(filter bson.M, update interface{}, opts ...*options.UpdateOptions) interface{} {
 	filter = build_id(filter)
-	res, err := col.Collection.UpdateOne(context.TODO(), filter, update, opts...)
+	res, err := col.Collection.UpdateOne(context.Background(), filter, update, opts...)
 	if err != nil {
 		log.Println(err)
 	}
