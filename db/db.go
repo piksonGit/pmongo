@@ -2,6 +2,9 @@ package db
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
 	"log"
 	"reflect"
 	"time"
@@ -107,4 +110,18 @@ func (col *Col) UpdateOne(filter bson.M, update interface{}, opts ...*options.Up
 		log.Println(err)
 	}
 	return res
+}
+
+func ReadJson(filepath string) map[string]string {
+	data, err := ioutil.ReadFile(filepath)
+	if err != nil {
+		fmt.Println("读取json配置错误")
+	}
+	var jsonContent map[string]string = make(map[string]string)
+	// Unmarshal第二个参数必须是指针
+	err = json.Unmarshal(data, &jsonContent)
+	if err != nil {
+		fmt.Println("json解析出错", err)
+	}
+	return jsonContent
 }
