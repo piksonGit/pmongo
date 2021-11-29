@@ -1,2 +1,2 @@
 # pmongo
-make go mongodb easier to use
+make go mongodb use easier
